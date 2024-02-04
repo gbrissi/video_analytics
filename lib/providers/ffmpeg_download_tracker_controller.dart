@@ -10,6 +10,8 @@ class FFmpegDownloadTrackerController extends ChangeNotifier {
 
   calculateFFmpegProgress(FFMpegProgress value) {
     double progress = (value.downloaded / value.fileSize) * 100;
+    if (progress.isNaN) progress = 0;
+
     setDownloadProgress(progress);
   }
 
