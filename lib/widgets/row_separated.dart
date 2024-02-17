@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class ColumnSeparated extends StatelessWidget {
-  ColumnSeparated({
+class RowSeparated extends StatelessWidget {
+  RowSeparated({
     super.key,
     required List<Widget> children,
     required double spacing,
+    this.mainAxisSize = MainAxisSize.max,
     this.crossAxisAlignment = CrossAxisAlignment.center,
     this.mainAxisAlignment = MainAxisAlignment.start,
-    this.mainAxisSize = MainAxisSize.min,
   }) : spacedChildren = _getSpacedChildren(children, spacing);
   final List<Widget> spacedChildren;
   final CrossAxisAlignment crossAxisAlignment;
@@ -16,7 +16,7 @@ class ColumnSeparated extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Row(
       mainAxisAlignment: mainAxisAlignment,
       crossAxisAlignment: crossAxisAlignment,
       mainAxisSize: mainAxisSize,
@@ -30,7 +30,7 @@ List<Widget> _getSpacedChildren(
   double spacing,
 ) {
   final List<Widget> spacedChildren = [];
-  final SizedBox divider = SizedBox(height: spacing);
+  final SizedBox divider = SizedBox(width: spacing);
 
   for (var i = 0; i < children.length; i++) {
     spacedChildren.add(children[i]);

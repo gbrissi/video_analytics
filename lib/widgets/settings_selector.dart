@@ -10,21 +10,22 @@ class SelectorOption<T> {
   });
 }
 
+bool _equalsDf<T>(T e1, T e2) => e1 == e2;
+
 class SettingsSelector<T> extends StatelessWidget {
-  const SettingsSelector({
+  SettingsSelector({
     super.key,
     required this.selectedOption,
     required this.options,
     required this.onChanged,
-  });
+    bool Function(T e1, T e2)? equals,
+  }) : equals = equals ?? _equalsDf;
+  final bool Function(T e1, T e2) equals;
   final T selectedOption;
   final void Function(T value) onChanged;
   final List<SelectorOption<T>> options;
-  String get selectedOptionName => options
-      .firstWhere(
-        (e) => e.value == selectedOption,
-      )
-      .name;
+  String get selectedOptionName =>
+      options.firstWhere((e) => equals(e.value, selectedOption)).name;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +40,7 @@ class SettingsSelector<T> extends StatelessWidget {
           .toList(),
       builder: (context, controller, child) {
         return IntrinsicWidth(
-          child: OutlinedButton(
+          child: ElevatedButton(
             style: const ButtonStyle(
               padding: MaterialStatePropertyAll(
                 EdgeInsets.symmetric(

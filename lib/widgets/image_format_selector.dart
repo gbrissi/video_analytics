@@ -22,7 +22,7 @@ class _ImageFormatSelectorState extends State<ImageFormatSelector> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              "Selecione o formato de cada FRAME que será extraido",
+              "Image format",
               style: TextStyle(
                 fontSize: 16,
               ),

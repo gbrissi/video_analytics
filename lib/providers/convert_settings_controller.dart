@@ -25,6 +25,30 @@ class ConvertSettingsController extends ChangeNotifier {
   ImgFormat _imgFormat = ImgFormat.bmp;
   VidStep? step;
   bool _isInitialized = false;
+  Size? videoRes;
+
+  double? get aspectRatio {
+    double? value;
+    if (videoRes != null) {
+      value = videoRes!.width / videoRes!.height;
+      print("Valora qui: ${videoRes!.width}, ${videoRes!.height}, $value");
+    }
+
+    return value;
+  }
+
+  double? get highestSizeInRes {
+    double? value;
+    if (videoRes != null) {
+      if (videoRes!.width > videoRes!.height) {
+        value = videoRes!.width;
+      } else {
+        value = videoRes!.height;
+      }
+    }
+
+    return value;
+  }
 
   DurationRange? get durationRange => _durationRange;
   ImgFormat get imgFormat => _imgFormat;
@@ -37,6 +61,14 @@ class ConvertSettingsController extends ChangeNotifier {
     final Duration? totalDuration = await FFmpegService.getVidTotalDuration(
       vidFile.path,
     );
+
+    final Size? res = await FFmpegService.getVidRes(
+      vidFile.path,
+    );
+
+    if (res != null) {
+      setRes(res);
+    }
 
     if (totalDuration != null) {
       setEndDuration(totalDuration);
@@ -56,6 +88,11 @@ class ConvertSettingsController extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setRes(Size res) {
+    videoRes = res;
+    notifyListeners();
+  }
+
   setEndDuration(Duration duration) {
     final Duration start = _durationRange?.start ?? Duration.zero;
     if (start.inMilliseconds < duration.inMilliseconds) {
@@ -70,7 +107,7 @@ class ConvertSettingsController extends ChangeNotifier {
 
   setStartDuration(Duration duration) {
     final Duration? end = _durationRange?.end;
-    if (end == null) throw ("Duration end has not been properly setted");
+    if (end == null) throw ("Duration end has not been properly set");
 
     if (end.inMilliseconds < duration.inMilliseconds) {
       _durationRange = DurationRange(

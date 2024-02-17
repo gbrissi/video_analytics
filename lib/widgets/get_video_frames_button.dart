@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:video_analytics/providers/ffmpeg_download_tracker_controller.dart';
 import 'package:video_analytics/providers/frames_panel_controller.dart';
 import 'package:video_analytics/service/ffmpeg_service.dart';
+import 'package:video_analytics/widgets/row_separated.dart';
 
 class GetVideoFramesButton extends StatefulWidget {
   const GetVideoFramesButton({
@@ -32,7 +33,7 @@ class _GetVideoFramesButtonState extends State<GetVideoFramesButton> {
           title: const Text("FFmpeg download has failed"),
           content: Text(result.reasoning),
           actions: [
-            ElevatedButton(
+            TextButton(
               onPressed: Navigator.of(context).pop,
               child: const Text("OK"),
             )
@@ -80,10 +81,28 @@ class _GetVideoFramesButtonState extends State<GetVideoFramesButton> {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton.icon(
-      label: const Text("Converter video em frames"),
-      icon: const Icon(Icons.sync),
+    return FilledButton.icon(
       onPressed: _getVideoFrames,
+      style: ButtonStyle(
+        padding: const MaterialStatePropertyAll(
+          EdgeInsets.symmetric(
+            vertical: 18,
+            horizontal: 12,
+          ),
+        ),
+        shape: MaterialStatePropertyAll(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+      ),
+      icon: const Icon(Icons.sync, size: 18),
+      label: const Text(
+        "Convert video to image album",
+        // style: TextStyle(
+        //   fontSize: 16,
+        // ),
+      ),
     );
   }
 }

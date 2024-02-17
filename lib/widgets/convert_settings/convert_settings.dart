@@ -61,7 +61,7 @@ class _ConvertSettingsState extends State<VideoRangeSelector> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text(
-          "Selecione o periodo do vídeo em que os frames serão extraídos",
+          "Capture duration range",
           style: TextStyle(
             fontSize: 16,
             // fontWeight: FontWeight.bold,

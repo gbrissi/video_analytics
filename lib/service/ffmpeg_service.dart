@@ -136,7 +136,7 @@ class FFmpegService {
     return result;
   }
 
-  static Future<Map<dynamic, dynamic>?> _getVidInformation(
+  static Future<Map<dynamic, dynamic>?> getVidInformation(
       String filePath) async {
     final MediaInformation? mediaInfo = await _ffmpeg.runProbe(filePath);
     final Map<dynamic, dynamic>? mediaProperties =
@@ -145,10 +145,23 @@ class FFmpegService {
     return mediaProperties;
   }
 
+  static Future<Size?> getVidRes(String filePath) async {
+    Size? resolution;
+    final Map<dynamic, dynamic>? vidInfo = await getVidInformation(filePath);
+    if (vidInfo != null) {
+      resolution = Size(
+        vidInfo["streams"][0]['width'].toDouble(),
+        vidInfo["streams"][0]['height'].toDouble(),
+      );
+    }
+
+    return resolution;
+  }
+
   static Future<Duration?> getVidTotalDuration(String filePath) async {
     Duration? duration;
 
-    final Map<dynamic, dynamic>? mediaProperties = await _getVidInformation(
+    final Map<dynamic, dynamic>? mediaProperties = await getVidInformation(
       filePath,
     );
 
@@ -173,7 +186,7 @@ class FFmpegService {
   static Future<int?> _getVidTotalFrames(String filePath) async {
     int? vidTotalFrames;
 
-    final Map<dynamic, dynamic>? mediaProperties = await _getVidInformation(
+    final Map<dynamic, dynamic>? mediaProperties = await getVidInformation(
       filePath,
     );
 
